@@ -13,7 +13,7 @@ for species in response_json['pokemon_species'] :
     poke_url = species['url']
     pokemon_id = int(poke_url[poke_url.find('-species/')+9:len(poke_url)-1])
     # print(pokemon_id)
-    pokemon_db_a[species['name']] = {'id': pokemon_id, 'gen': '1'}
+    pokemon_db_a[pokemon_id] = {'name': species['name'], 'gen': '1'}
 
 print(pokemon_db_a)
-print(pokemon_db_a['mankey'])
+print(pokemon_db_a[99])
