@@ -3,6 +3,7 @@ import json
 
 gen = 1
 pokemon_db = {}
+pokemon_db['pokemon'] = []
 while gen < 8:
     response = requests.get("https://pokeapi.co/api/v2/generation/"+str(gen))
     # print(response.status_code)
@@ -13,10 +14,17 @@ while gen < 8:
         poke_url = species['url']
         pokemon_id = int(poke_url[poke_url.find('-species/')+9:len(poke_url)-1])
         # print(pokemon_id)
-        pokemon_db[pokemon_id] = {'name': species['name'], 'gen': gen}
+        pokemon_db['pokemon'].append({
+            'id':pokemon_id,
+            'name': species['name'],
+            'gen': gen
+        })
+        # pokemon_db['pokemon'][pokemon_id] = {'name': species['name'], 'gen': gen}
     gen += 1
 
 # print(pokemon_db)
+with open('pokemon_db.json', 'w') as outfile:
+    json.dump(pokemon_db, outfile, indent=4)
 '''
 # testing statements
 
