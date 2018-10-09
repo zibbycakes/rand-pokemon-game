@@ -1,9 +1,10 @@
 import requests
 import json
+import math
+import time
 
 gen = 1
 pokemon_db = {}
-pokemon_db['pokemon'] = []
 while gen < 8:
     response = requests.get("https://pokeapi.co/api/v2/generation/"+str(gen))
     # print(response.status_code)
@@ -14,13 +15,60 @@ while gen < 8:
         poke_url = species['url']
         pokemon_id = int(poke_url[poke_url.find('-species/')+9:len(poke_url)-1])
         # print(pokemon_id)
-        pokemon_db['pokemon'].append({
-            'id':pokemon_id,
+        pokemon_db[pokemon_id] = {
+            # 'id':pokemon_id,
             'name': species['name'],
             'gen': gen
-        })
+        }
         # pokemon_db['pokemon'][pokemon_id] = {'name': species['name'], 'gen': gen}
     gen += 1
+
+# response = requests.get("https://pokeapi.co/api/v2/pokemon/")
+# response_json = response.json()
+# pokemon_total = response_json['count']
+pokemon_total = 801
+repeat = math.floor(pokemon_total/100)
+
+current_place = 1
+
+for r in range(1,repeat+1):
+    for x in range((100*(r-1)+1), (100*r)+1):
+        print(x)
+        pkmn_no = x+1
+
+        url = "https://pokeapi.co/api/v2/pokemon/"+str(pkmn_no)+"/"
+        print(url)
+        response = requests.get(url)
+        
+        response_json = response.json()
+
+        pokemon_db[pkmn_no]['sprite'] = response_json['sprites']['front_default']
+        types = response_json['types']
+
+        pokemon_db[pkmn_no]['type'] = types[0]['type']['name']
+        if(len(types) > 1):
+            pokemon_db[pkmn_no]['type'] = pokemon_db[pkmn_no]['type'] + ", " + types[1]['type']['name']
+        current_place += 1
+
+
+    time.sleep(60)
+for x in range(repeat*100, repeat*100+2):
+    print(x)
+    pkmn_no = x+1
+
+    url = "https://pokeapi.co/api/v2/pokemon/"+str(pkmn_no)+"/"
+    print(url)
+    response = requests.get(url)
+    
+    response_json = response.json()
+
+    pokemon_db[pkmn_no]['sprite'] = response_json['sprites']['front_default']
+    types = response_json['types']
+
+    pokemon_db[pkmn_no]['type'] = types[0]['type']['name']
+    if(len(types) > 1):
+        pokemon_db[pkmn_no]['type'] = pokemon_db[pkmn_no]['type'] + ", " + types[1]['type']['name']
+
 
 # print(pokemon_db)
 with open('pokemon_db.json', 'w') as outfile:
