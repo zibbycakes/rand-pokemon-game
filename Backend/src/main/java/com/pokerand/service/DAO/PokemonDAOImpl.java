@@ -36,11 +36,11 @@ public class PokemonDAOImpl implements PokemonDAO {
                 String sprite = resultSet.getString("sprite");
 
                 List<String> pkmnInfo = new ArrayList<String>();
-                pkmnInfo.add(name);
-                pkmnInfo.add(generation);
-                pkmnInfo.add(type1);
-                pkmnInfo.add(type2);
-                pkmnInfo.add(sprite);
+                pkmnInfo.add("name_"+name);
+                pkmnInfo.add("gen_"+generation);
+                pkmnInfo.add("t1_"+type1);
+                pkmnInfo.add("t2_"+type2);
+                pkmnInfo.add("sprite_"+sprite);
 
                 endResults.put(pkmnno, pkmnInfo);
             }
